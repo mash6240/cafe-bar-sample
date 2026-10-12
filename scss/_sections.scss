@@ -1,0 +1,1034 @@
+@use "sass:color";
+@use "settings" as *;
+
+// =====================================================
+// Header
+// =====================================================
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: $header-h;
+  transition: background-color 0.4s, box-shadow 0.4s, height 0.4s;
+  @include mq(sp) {
+    height: $header-h-sp;
+  }
+  &.is-scrolled {
+    // backdrop-filterは子要素のposition:fixed（SPメニュー）を崩すため使わない
+    background: rgba($c-bg, 0.94);
+    box-shadow: 0 1px 0 $c-line;
+    @include mq(wide) {
+      height: 68px;
+    }
+  }
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 100%;
+    padding-inline: 32px;
+    @include mq(sp) {
+      padding-inline: 20px;
+    }
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    line-height: 1;
+    &-ja {
+      font-family: $f-mincho;
+      font-size: 30px;
+      color: $c-amber-light;
+      @include mq(sp) {
+        font-size: 24px;
+      }
+    }
+    &-en {
+      font-family: $f-en;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      @include mq(sp) {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// ----- グローバルナビ -----
+.gnav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  &__list {
+    display: flex;
+    gap: 28px;
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: $f-en;
+      font-size: 17px;
+      letter-spacing: 0.1em;
+      line-height: 1.3;
+      transition: color 0.3s;
+      span {
+        font-family: $f-base;
+        font-size: 10px;
+        color: $c-sub;
+        letter-spacing: 0.1em;
+      }
+      @include hover {
+        color: $c-amber-light;
+      }
+    }
+  }
+  &__reserve {
+    min-height: 44px;
+    padding: 8px 24px;
+    font-size: 14px;
+  }
+
+  // タブレット・SP：全画面メニュー
+  @include mq(tab) {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 80px 24px 40px;
+    background: rgba($c-bg, 0.97);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    &__list {
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      a {
+        font-size: 24px;
+        span {
+          font-size: 11px;
+        }
+      }
+    }
+    &__reserve {
+      min-height: 52px;
+      padding-inline: 48px;
+      font-size: 15px;
+    }
+  }
+}
+
+.hamburger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  @include mq(tab) {
+    display: block;
+  }
+  span {
+    position: absolute;
+    left: 10px;
+    width: 24px;
+    height: 1px;
+    background: $c-text;
+    transition: transform 0.3s, top 0.3s;
+    &:nth-child(1) {
+      top: 17px;
+    }
+    &:nth-child(2) {
+      top: 26px;
+    }
+  }
+  &[aria-expanded="true"] span {
+    &:nth-child(1) {
+      top: 22px;
+      transform: rotate(30deg);
+    }
+    &:nth-child(2) {
+      top: 22px;
+      transform: rotate(-30deg);
+    }
+  }
+}
+
+// =====================================================
+// Hero
+// =====================================================
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url("../img/hero.jpg") center / cover no-repeat;
+    animation: heroZoom 20s ease-out forwards;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba($c-bg, 0.92) 0%, rgba($c-bg, 0.6) 45%, rgba($c-bg, 0.15) 100%),
+        linear-gradient(0deg, $c-bg 0%, transparent 30%);
+    }
+    @include mq(sp) {
+      background-position: 70% center;
+      &::after {
+        background:
+          linear-gradient(0deg, $c-bg 0%, rgba($c-bg, 0.55) 55%, rgba($c-bg, 0.35) 100%);
+      }
+    }
+  }
+  &__inner {
+    width: 100%;
+    max-width: $container + 48px;
+    margin-inline: auto;
+    padding: $header-h 24px 80px;
+    @include mq(sp) {
+      padding: $header-h-sp 20px 72px;
+      align-self: flex-end;
+    }
+  }
+  &__en {
+    font-family: $f-en;
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: 0.16em;
+    color: $c-amber;
+    @include mq(sp) {
+      font-size: 18px;
+    }
+  }
+  &__copy {
+    margin-block: 16px 28px;
+    font-family: $f-mincho;
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    @include mq(sp) {
+      margin-block: 12px 20px;
+      font-size: 34px;
+      letter-spacing: 0.1em;
+    }
+  }
+  &__lead {
+    max-width: 30em;
+    color: rgba($c-text, 0.85);
+    line-height: 2.1;
+  }
+  &__status {
+    margin-top: 36px;
+    @include mq(sp) {
+      margin-top: 28px;
+    }
+  }
+  &__scroll {
+    position: absolute;
+    right: 40px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-family: $f-en;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
+    @include mq(sp) {
+      display: none;
+    }
+    &::after {
+      content: "";
+      width: 1px;
+      height: 80px;
+      background: linear-gradient($c-amber, transparent);
+      animation: scrollLine 2.4s $ease infinite;
+      transform-origin: top;
+    }
+  }
+}
+
+@keyframes heroZoom {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scrollLine {
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  51% {
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+// =====================================================
+// Concept
+// =====================================================
+.concept {
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 80px;
+    @include mq(tab) {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+  }
+  &__text p + p {
+    margin-top: 1.4em;
+  }
+  &__images {
+    position: relative;
+    padding-bottom: 18%;
+  }
+  &__img {
+    overflow: hidden;
+    border-radius: 4px;
+    img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+    &--main {
+      width: 86%;
+    }
+    &--sub {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 48%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      img {
+        aspect-ratio: 1;
+      }
+    }
+  }
+}
+
+// =====================================================
+// Time
+// =====================================================
+.time {
+  background: $c-bg-2;
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    counter-reset: time;
+    @include mq(tab) {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+      margin-inline: auto;
+      gap: 56px;
+    }
+  }
+  &__item {
+    position: relative;
+    // 時間帯ごとに少しずつずらして配置
+    @include mq(wide) {
+      &:nth-child(2) {
+        margin-top: 60px;
+      }
+      &:nth-child(3) {
+        margin-top: 120px;
+      }
+    }
+  }
+  &__img {
+    overflow: hidden;
+    border-radius: 4px;
+    img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      transition: transform 0.8s $ease;
+    }
+  }
+  &__item:hover &__img img {
+    transform: scale(1.04);
+  }
+  &__body {
+    padding-top: 24px;
+    p {
+      color: rgba($c-text, 0.85);
+      font-size: 15px;
+    }
+  }
+  &__clock {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: $f-en;
+    font-style: italic;
+    font-size: 16px;
+    color: $c-amber !important;
+    letter-spacing: 0.12em;
+    .num {
+      font-style: normal;
+      font-size: 36px;
+      line-height: 1;
+    }
+  }
+  &__title {
+    margin-block: 12px 10px;
+    font-family: $f-mincho;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 1.6;
+    letter-spacing: 0.1em;
+  }
+}
+
+// =====================================================
+// Menu
+// =====================================================
+.menu {
+  &__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 48px;
+    @include mq(sp) {
+      margin-bottom: 32px;
+    }
+  }
+  &__tab {
+    min-width: 140px;
+    padding: 10px 24px;
+    border: 1px solid $c-line;
+    border-radius: 999px;
+    background: transparent;
+    font-family: $f-en;
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    @include mq(sp) {
+      flex: 1;
+      min-width: 0;
+      padding-inline: 8px;
+      font-size: 16px;
+    }
+    @include hover {
+      border-color: $c-amber;
+    }
+    &[aria-selected="true"] {
+      background: $c-amber;
+      border-color: $c-amber;
+      color: $c-bg;
+    }
+  }
+  &__panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 64px;
+    animation: panelIn 0.6s $ease;
+    &[hidden] {
+      display: none;
+    }
+    @include mq(tab) {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+  }
+  &__img {
+    overflow: hidden;
+    border-radius: 4px;
+    img {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+    }
+  }
+  &__lead {
+    margin-bottom: 28px;
+    font-family: $f-mincho;
+    font-size: 17px;
+    line-height: 1.9;
+    @include mq(sp) {
+      font-size: 15px;
+    }
+  }
+  &__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-block: 12px;
+    border-bottom: 1px solid $c-line;
+    // 品名と価格の間を点線でつなぐ
+    &::after {
+      content: "";
+      order: 1;
+      flex: 1;
+      min-width: 16px;
+      border-bottom: 1px dotted rgba($c-text, 0.3);
+    }
+  }
+  &__name small {
+    font-size: 12px;
+    color: $c-sub;
+  }
+  &__price {
+    order: 2;
+    font-family: $f-en;
+    font-weight: 600;
+    font-size: 19px;
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+    &::before {
+      content: "¥";
+      margin-right: 2px;
+      font-size: 0.85em;
+    }
+  }
+  &__note {
+    margin-top: 40px;
+    font-size: 13px;
+    color: $c-sub;
+    text-align: center;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// =====================================================
+// Gallery
+// =====================================================
+.gallery {
+  background: $c-bg-2;
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 12px;
+    @include mq(tab) {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 180px;
+    }
+    @include mq(sp) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 140px;
+      gap: 8px;
+    }
+    // 1枚目と4枚目を大きく見せる
+    li:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    li:nth-child(4) {
+      grid-row: span 2;
+    }
+    @include mq(tab) {
+      li:nth-child(4) {
+        grid-row: span 1;
+      }
+      // 最後の1枚が余らないよう横長に
+      li:nth-child(8) {
+        grid-column: span 2;
+      }
+    }
+  }
+  &__item {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: $c-surface;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s $ease, opacity 0.4s;
+    }
+    @include hover {
+      img {
+        transform: scale(1.05);
+        opacity: 0.85;
+      }
+    }
+  }
+}
+
+// ----- ライトボックス -----
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $c-text;
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+  }
+  &[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: panelIn 0.3s $ease;
+  }
+  &__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: min(1000px, 86vw);
+  }
+  &__img {
+    max-height: 78vh;
+    width: auto;
+    border-radius: 4px;
+  }
+  &__caption {
+    font-size: 14px;
+    color: $c-sub;
+  }
+  &__btn,
+  &__close {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid $c-line;
+    border-radius: 50%;
+    background: rgba($c-bg, 0.6);
+    font-size: 26px;
+    line-height: 1;
+    transition: background-color 0.3s;
+    @include hover {
+      background: $c-amber;
+      color: $c-bg;
+    }
+  }
+  &__btn {
+    top: 50%;
+    transform: translateY(-50%);
+    &--prev {
+      left: 24px;
+    }
+    &--next {
+      right: 24px;
+    }
+    @include mq(sp) {
+      top: auto;
+      bottom: 24px;
+      transform: none;
+      &--prev {
+        left: calc(50% - 64px);
+      }
+      &--next {
+        right: calc(50% - 64px);
+      }
+    }
+  }
+  &__close {
+    top: 20px;
+    right: 20px;
+  }
+}
+
+// =====================================================
+// News & Instagram
+// =====================================================
+.news {
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    @include mq(tab) {
+      grid-template-columns: 1fr;
+      gap: 72px;
+    }
+  }
+  &__list {
+    border-top: 1px solid $c-line;
+  }
+  &__link {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: baseline;
+    gap: 6px 20px;
+    padding: 22px 4px;
+    border-bottom: 1px solid $c-line;
+    transition: background-color 0.3s;
+    @include mq(sp) {
+      grid-template-columns: auto 1fr;
+    }
+    @include hover {
+      background: rgba($c-text, 0.04);
+      .news__title {
+        color: $c-amber-light;
+      }
+    }
+    time {
+      font-size: 17px;
+      color: $c-sub;
+    }
+  }
+  &__cat {
+    justify-self: start;
+    padding: 0 10px;
+    border: 1px solid rgba($c-amber, 0.6);
+    border-radius: 999px;
+    font-family: $f-en;
+    font-size: 13px;
+    color: $c-amber;
+    letter-spacing: 0.1em;
+  }
+  &__title {
+    font-size: 15px;
+    line-height: 1.7;
+    transition: color 0.3s;
+    @include mq(sp) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.insta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 32px;
+  &__item {
+    display: block;
+    overflow: hidden;
+    border-radius: 4px;
+    img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      transition: transform 0.8s $ease, opacity 0.4s;
+    }
+    @include hover {
+      img {
+        transform: scale(1.06);
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// =====================================================
+// Reserve
+// =====================================================
+.reserve {
+  position: relative;
+  background:
+    linear-gradient(rgba($c-bg, 0.9), rgba($c-bg, 0.94)),
+    url("../img/concept-1.jpg") center / cover no-repeat;
+  &__lead {
+    margin-bottom: 40px;
+    text-align: center;
+    color: rgba($c-text, 0.85);
+    @include mq(sp) {
+      text-align: left;
+    }
+  }
+}
+
+.form {
+  padding: 48px;
+  border: 1px solid $c-line;
+  border-radius: 8px;
+  background: rgba($c-surface, 0.85);
+  @include mq(sp) {
+    padding: 28px 20px;
+  }
+  &__row {
+    & + & {
+      margin-top: 24px;
+    }
+    &--half {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      @include mq(sp) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &__req,
+  &__opt {
+    padding: 0 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  &__req {
+    background: $c-amber;
+    color: $c-bg;
+  }
+  &__opt {
+    border: 1px solid $c-line;
+    color: $c-sub;
+  }
+  &__input {
+    width: 100%;
+    min-height: 50px;
+    padding: 10px 14px;
+    border: 1px solid rgba($c-text, 0.22);
+    border-radius: 4px;
+    background: rgba($c-bg, 0.6);
+    font-size: 16px; // iOSのズーム防止
+    color-scheme: dark;
+    transition: border-color 0.3s;
+    &::placeholder {
+      color: rgba($c-text, 0.35);
+    }
+    &:focus {
+      outline: none;
+      border-color: $c-amber;
+    }
+    &.is-error {
+      border-color: $c-error;
+    }
+  }
+  textarea.form__input {
+    resize: vertical;
+  }
+  &__radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    min-height: 50px;
+    align-items: center;
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: $c-amber;
+    }
+  }
+  &__error {
+    min-height: 0;
+    margin-top: 6px;
+    font-size: 13px;
+    color: $c-error;
+    &:empty {
+      display: none;
+    }
+  }
+  &__submit {
+    display: flex;
+    width: 100%;
+    max-width: 360px;
+    margin: 40px auto 0;
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+  &__done {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid rgba($c-amber, 0.5);
+    border-radius: 4px;
+    text-align: center;
+    line-height: 1.9;
+    small {
+      color: $c-sub;
+    }
+  }
+}
+
+// =====================================================
+// Access
+// =====================================================
+.access {
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    align-items: start;
+    @include mq(tab) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+  &__list {
+    border-top: 1px solid $c-line;
+    div {
+      display: grid;
+      grid-template-columns: 6.5em 1fr;
+      gap: 16px;
+      @include mq(sp) {
+        grid-template-columns: 5em 1fr;
+        gap: 12px;
+      }
+      padding-block: 16px;
+      border-bottom: 1px solid $c-line;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    dt {
+      color: $c-sub;
+    }
+    small {
+      color: $c-sub;
+    }
+    .num {
+      font-size: 18px;
+    }
+  }
+  &__note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: $c-sub;
+  }
+  &__map {
+    iframe {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border: 0;
+      border-radius: 4px;
+      // ダークな配色に合わせて地図をなじませる
+      filter: grayscale(0.6) invert(0.9) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+      @include mq(sp) {
+        aspect-ratio: 1;
+      }
+    }
+  }
+  &__map-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: $c-sub;
+  }
+}
+
+// =====================================================
+// Footer
+// =====================================================
+.footer {
+  padding-block: 56px 40px;
+  border-top: 1px solid $c-line;
+  text-align: center;
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: $f-en;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+    span {
+      font-family: $f-mincho;
+      font-size: 28px;
+      color: $c-amber-light;
+    }
+  }
+  &__hours {
+    margin-top: 8px;
+    font-size: 13px;
+    color: $c-sub;
+  }
+  &__copy {
+    margin-top: 24px;
+    color: $c-sub;
+    small {
+      font-size: 11px;
+    }
+  }
+}
+
+// =====================================================
+// SP固定ボタン
+// =====================================================
+.fixed-cta {
+  display: none;
+  @include mq(sp) {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    height: $fixed-cta-h;
+    background: rgba($c-bg, 0.96);
+    border-top: 1px solid $c-line;
+    transform: translateY(100%);
+    transition: transform 0.4s $ease;
+    &.is-show {
+      transform: none;
+    }
+  }
+  &__btn {
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    &--reserve {
+      background: $c-amber;
+      color: $c-bg;
+    }
+    &--menu {
+      font-family: $f-base;
+    }
+  }
+}

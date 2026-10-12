@@ -1,0 +1,46 @@
+@use "sass:map";
+
+// ===== Colors =====
+$c-bg: #14110f;          // 夜の背景（こげ茶寄りの黒）
+$c-bg-2: #1c1815;        // セクションの切り替え用
+$c-surface: #241f1b;     // カード・フォーム
+$c-text: #ece4d8;        // 生成り色の文字
+$c-sub: #a89c8c;         // 補足テキスト
+$c-amber: #d9a35b;       // ランプの灯り（アクセント）
+$c-amber-light: #f0c789;
+$c-line: rgba(236, 228, 216, 0.14);
+$c-error: #f08a7a;
+$c-open: #7fd18b;
+
+// ===== Fonts =====
+$f-base: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+$f-mincho: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+$f-en: "Cormorant Garamond", $f-mincho;
+
+// ===== Layout =====
+$header-h: 84px;
+$header-h-sp: 60px;
+$fixed-cta-h: 60px;
+$container: 1120px;
+$ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+$bp: (
+  sp: "(max-width: 767px)",
+  tab: "(max-width: 1023px)",
+  pc: "(min-width: 768px)",
+  wide: "(min-width: 1024px)",
+);
+
+@mixin mq($key) {
+  @media #{map.get($bp, $key)} {
+    @content;
+  }
+}
+
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
